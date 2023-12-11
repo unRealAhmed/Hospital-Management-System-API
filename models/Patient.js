@@ -1,5 +1,9 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../DB/DBConnection');
+const Appointment = require('./Appointment');
+const User = require('./User');
+
+
 
 const Patient = sequelize.define('Patient', {
   patientId: {
@@ -44,6 +48,21 @@ const Patient = sequelize.define('Patient', {
   },
 }, {
   timestamps: true,
+});
+
+Patient.hasMany(Appointment, {
+  foreignKey: 'patientId',
+  as: 'appointments',
+});
+
+Appointment.belongsTo(Patient, {
+  foreignKey: 'patientId',
+  as: 'assignedPatient',
+});
+
+Patient.belongsTo(User, {
+  foreignKey: 'userId',
+  onDelete: 'CASCADE',
 });
 
 module.exports = Patient;

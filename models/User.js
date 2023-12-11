@@ -2,6 +2,8 @@ const { DataTypes } = require('sequelize');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const sequelize = require('../DB/DBConnection');
+// const Patient = require('./Patient');
+
 
 const User = sequelize.define('User', {
   userId: {
@@ -84,5 +86,15 @@ User.prototype.createPasswordResetToken = function () {
 
   return resetToken;
 };
+
+// User.hasOne(Doctor, {
+//   foreignKey: 'userId',
+//   onDelete: 'CASCADE',
+// });
+
+// User.hasOne(Patient, {
+//   foreignKey: 'userId',
+//   onDelete: 'CASCADE',
+// });
 
 module.exports = User;
