@@ -1,13 +1,11 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../DB/DBConnection');
-const Patient = require('./Patient');
-const Doctor = require('./Doctor');
 
 const MedicalRecord = sequelize.define('MedicalRecord', {
   recordId: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
+    type: DataTypes.INTEGER.UNSIGNED,
     primaryKey: true,
+    autoIncrement: true,
     allowNull: false,
   },
   diagnosis: {
@@ -21,27 +19,23 @@ const MedicalRecord = sequelize.define('MedicalRecord', {
     type: DataTypes.TEXT,
   },
   date: {
-    type: DataTypes.DATEONLY,
+    type: DataTypes.DATE,
     allowNull: false,
   },
-  // Foreign keys
   patientId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER.UNSIGNED,
     references: {
       model: 'Patients',
       key: 'patientId',
     },
   },
   doctorId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER.UNSIGNED,
     references: {
       model: 'Doctors',
       key: 'doctorId',
     },
   },
 });
-
-MedicalRecord.belongsTo(Patient, { foreignKey: 'patientId' });
-MedicalRecord.belongsTo(Doctor, { foreignKey: 'doctorId' });
 
 module.exports = MedicalRecord;

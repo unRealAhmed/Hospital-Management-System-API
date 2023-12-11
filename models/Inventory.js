@@ -4,12 +4,12 @@ const sequelize = require('../DB/DBConnection');
 const Inventory = sequelize.define('Inventory', {
   itemId: {
     type: DataTypes.INTEGER,
-    autoIncrement: true,
     primaryKey: true,
+    autoIncrement: true,
     allowNull: false,
   },
   itemName: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(255),
     allowNull: false,
   },
   quantity: {
@@ -17,12 +17,11 @@ const Inventory = sequelize.define('Inventory', {
     allowNull: false,
   },
   expiryDate: {
-    type: DataTypes.DATEONLY,
+    type: DataTypes.DATE,
   },
   supplierInformation: {
     type: DataTypes.TEXT,
   },
 });
-
 
 module.exports = Inventory;

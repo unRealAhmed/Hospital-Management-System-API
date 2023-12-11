@@ -1,12 +1,11 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../DB/DBConnection');
-const Patient = require('./Patient');
 
 const Billing = sequelize.define('Billing', {
   billId: {
     type: DataTypes.INTEGER,
-    autoIncrement: true,
     primaryKey: true,
+    autoIncrement: true,
     allowNull: false,
   },
   totalAmount: {
@@ -14,19 +13,16 @@ const Billing = sequelize.define('Billing', {
     allowNull: false,
   },
   paymentStatus: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(255),
     allowNull: false,
   },
-  // Foreign key
   patientId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER.UNSIGNED,
     references: {
       model: 'Patients',
       key: 'patientId',
     },
   },
 });
-
-Billing.belongsTo(Patient, { foreignKey: 'patientId' });
 
 module.exports = Billing;

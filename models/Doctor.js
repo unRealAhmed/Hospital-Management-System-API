@@ -1,58 +1,42 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../DB/DBConnection');
-const Appointment = require('./Appointment');
-const AvailabilitySchedule = require('./AvailabilitySchedule');
-const User = require('./User');
-
 
 const Doctor = sequelize.define('Doctor', {
   doctorId: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
+    type: DataTypes.INTEGER.UNSIGNED,
     primaryKey: true,
-    allowNull: false,
-  },
-  name: {
-    type: DataTypes.STRING,
+    autoIncrement: true,
     allowNull: false,
   },
   specialization: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(255),
     allowNull: false,
   },
-  contactInformation: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      isEmail: true,
-    },
-  },
-  // Foreign keys
   appointmentId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER.UNSIGNED,
     references: {
       model: 'Appointments',
-      key: 'id',
+      key: 'appointmentId',
     },
+    allowNull: true,
   },
   availabilityScheduleId: {
     type: DataTypes.INTEGER,
     references: {
       model: 'AvailabilitySchedules',
-      key: 'id',
+      key: 'availabilityId',
     },
   },
   userId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER.UNSIGNED,
     references: {
       model: 'Users',
       key: 'userId',
     },
+    allowNull: false,
   },
+}, {
+  timestamps: true,
 });
-
-Doctor.hasMany(Appointment, { foreignKey: 'doctorId' });
-Doctor.belongsTo(AvailabilitySchedule, { foreignKey: 'availabilityScheduleId' });
-Doctor.belongsTo(User, { foreignKey: 'userId' });
 
 module.exports = Doctor;

@@ -1,65 +1,49 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../DB/DBConnection');
-const Appointment = require('./Appointment');
-const MedicalRecord = require('./MedicalRecord');
-const User = require('./User');
-
 
 const Patient = sequelize.define('Patient', {
   patientId: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
+    type: DataTypes.INTEGER.UNSIGNED,
     primaryKey: true,
-    allowNull: false,
-  },
-  name: {
-    type: DataTypes.STRING,
+    autoIncrement: true,
     allowNull: false,
   },
   age: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false,
   },
   gender: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(255),
     allowNull: false,
-  },
-  contactInformation: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      isEmail: true,
-    },
   },
   medicalHistory: {
     type: DataTypes.TEXT,
   },
-  // Foreign keys
   appointmentId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER.UNSIGNED,
     references: {
       model: 'Appointments',
-      key: 'id',
+      key: 'appointmentId',
     },
   },
   medicalRecordId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER.UNSIGNED,
     references: {
       model: 'MedicalRecords',
-      key: 'id',
+      key: 'recordId',
     },
+    allowNull: true,
   },
   userId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER.UNSIGNED,
     references: {
       model: 'Users',
       key: 'userId',
     },
+    allowNull: false,
   },
+}, {
+  timestamps: true,
 });
-
-Patient.belongsTo(Appointment, { foreignKey: 'appointmentId' });
-Patient.belongsTo(MedicalRecord, { foreignKey: 'medicalRecordId' });
-Patient.belongsTo(User, { foreignKey: 'userId' });
 
 module.exports = Patient;

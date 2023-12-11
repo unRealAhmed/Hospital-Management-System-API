@@ -1,16 +1,15 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../DB/DBConnection');
-const Doctor = require('./Doctor');
 
 const AvailabilitySchedule = sequelize.define('AvailabilitySchedule', {
   availabilityId: {
     type: DataTypes.INTEGER,
-    autoIncrement: true,
     primaryKey: true,
+    autoIncrement: true,
     allowNull: false,
   },
   day: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(255),
     allowNull: false,
   },
   startTime: {
@@ -21,16 +20,14 @@ const AvailabilitySchedule = sequelize.define('AvailabilitySchedule', {
     type: DataTypes.TIME,
     allowNull: false,
   },
-  // Foreign key
   doctorId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER.UNSIGNED,
     references: {
       model: 'Doctors',
       key: 'doctorId',
     },
+    allowNull: false,
   },
 });
-
-AvailabilitySchedule.belongsTo(Doctor, { foreignKey: 'doctorId' });
 
 module.exports = AvailabilitySchedule;
