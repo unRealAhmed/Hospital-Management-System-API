@@ -1,5 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../DB/DBConnection');
+const Patient = require('./Patient');
+
 
 const Billing = sequelize.define('Billing', {
   billId: {
@@ -24,5 +26,7 @@ const Billing = sequelize.define('Billing', {
     },
   },
 });
+
+Billing.belongsTo(Patient, { foreignKey: 'patientId' });
 
 module.exports = Billing;
