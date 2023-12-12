@@ -1,11 +1,9 @@
 const Appointment = require('../models/Appointment');
 const asyncHandler = require('../util/asyncHandler');
 const AppError = require('../util/appErrors');
-const AvailabilitySchedule = require('../models/AvailabilitySchedule');
 const Patient = require('../models/Patient');
 const Doctor = require('../models/Doctor');
 const User = require('../models/User');
-
 
 
 exports.createAppointment = asyncHandler(async (req, res, next) => {
@@ -79,44 +77,22 @@ exports.cancelAppointment = asyncHandler(async (req, res, next) => {
   });
 });
 
+
 exports.rescheduleAppointment = asyncHandler(async (req, res, next) => {
   const { appointmentId } = req.params;
   const { newDate, newTime } = req.body;
 
-  // 1. Find the appointment
-  const appointment = await Appointment.findByPk(appointmentId, {
-    include: [AvailabilitySchedule, Patient], // Include related models
-  });
+  const appointment = await Appointment.findByPk(appointmentId);
 
   if (!appointment) {
     return next(new AppError('Appointment not found.', 404));
   }
 
-  // 2. Check availability for the new date and time
-  const availableSlots = appointment.getAvailableSlots(newDate);
-  if (!availableSlots.includes(newTime)) {
-    return next(new AppError('The selected time is not available for this doctor on that date.', 400));
-  }
-
-  // 3. Check for conflicts with existing appointments for the doctor
-  const existingAppointments = await Appointment.findAll({
-    where: {
-      doctorId: appointment.doctorId,
-      date: newDate,
-      time: newTime,
-    },
+  await appointment.update({
+    date: newDate,
+    time: newTime,
   });
 
-  if (existingAppointments.length > 0) {
-    return next(new AppError('The doctor already has an appointment at that time.', 400));
-  }
-
-  // 4. Update the appointment data
-  appointment.date = newDate;
-  appointment.time = newTime;
-  await appointment.save();
-
-  // 5. Send confirmation message
   res.status(200).json({
     success: true,
     message: 'Appointment rescheduled successfully.',
@@ -127,4 +103,6 @@ exports.rescheduleAppointment = asyncHandler(async (req, res, next) => {
     },
   });
 });
+
+
 
