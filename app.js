@@ -9,7 +9,14 @@ const cookieParser = require('cookie-parser');
 require('./DB/DBConnection')
 // require('./DB/DBSync')
 const errorController = require('./controllers/errorController');
-
+const userRouter = require('./routes/userRoutes');
+const patientRouter = require('./routes/patientRoutes');
+const doctorRouter = require('./routes/doctorRoutes');
+const appointmentRouter = require('./routes/appointmentRoutes');
+const availabilityScheduleRouter = require('./routes/availabilityScheduleRoutes');
+const billingRouter = require('./routes/billingRoutes');
+const medicalRecordsRouter = require('./routes/medicalRecordsRoutes');
+const inventoryRouter = require('./routes/inventoryRoutes');
 
 //Middlewares
 
@@ -26,9 +33,17 @@ app.use('/api', rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
   message: 'Too many requests from this IP, please try again in an hour!'
 }));
+
 //ROUTES
 
-
+app.use('/users', userRouter)
+app.use('/patients', patientRouter)
+app.use('/doctors', doctorRouter)
+app.use('/appointments', appointmentRouter)
+app.use('/availability-schedules', availabilityScheduleRouter)
+app.use('/billings', billingRouter)
+app.use('/medical-records', medicalRecordsRouter)
+app.use('/inventory', inventoryRouter)
 
 // Error Handling Middleware: Handle requests for undefined routes
 app.all("*", (req, _, next) => {
