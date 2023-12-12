@@ -2,7 +2,6 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../DB/DBConnection');
 const Patient = require('./Patient');
 
-
 const Billing = sequelize.define('Billing', {
   billId: {
     type: DataTypes.INTEGER,

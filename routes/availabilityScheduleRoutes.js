@@ -1,4 +1,6 @@
 const express = require('express');
+const AvailabilityScheduleValidation = require('../validation/AvailabilityScheduleValidation');
+
 const {
   createAvailabilitySchedule,
   updateAvailabilitySchedule,
@@ -6,19 +8,22 @@ const {
   getAvailabilityScheduleForDoctor
 } = require('../controllers/availabilityScheduleCtr');
 const { protect, restrictTo } = require('../controllers/userController');
+const validationFunction = require('../middleware/validationFunction');
 
 const router = express.Router();
 
-router.use(protect)
+router.use(protect);
 
 router.get('/doctors/:doctorId', getAvailabilityScheduleForDoctor);
 
-router.use(restrictTo('doctor'))
+// Restricted to 'doctor' routes
+router.use(restrictTo('doctor'));
 
-router.post('/', createAvailabilitySchedule);
+router.post('/', validationFunction(AvailabilityScheduleValidation), createAvailabilitySchedule);
+
 router
   .route('/:availabilityId')
   .put(updateAvailabilitySchedule)
-  .delete(deleteAvailabilitySchedule)
+  .delete(deleteAvailabilitySchedule);
 
 module.exports = router;

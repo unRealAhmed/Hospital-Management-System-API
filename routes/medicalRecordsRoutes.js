@@ -1,4 +1,6 @@
 const express = require('express');
+const MedicalRecordValidation = require('../validation/MedicalRecordValidation');
+
 const {
   createMedicalRecord,
   getMedicalRecordsForPatient,
@@ -7,6 +9,7 @@ const {
   deleteMedicalRecord,
 } = require('../controllers/medicalRecordsController');
 const { protect, restrictTo } = require('../controllers/userController');
+const validationFunction = require('../middleware/validationFunction');
 
 const router = express.Router();
 
@@ -16,9 +19,10 @@ router.use(protect);
 router.get('/patient/:patientId', getMedicalRecordsForPatient);
 
 // Doctor routes
-router.use(restrictTo('doctor'))
+router.use(restrictTo('doctor'));
 
-router.post('/', createMedicalRecord);
+router.post('/', validationFunction(MedicalRecordValidation), createMedicalRecord);
+
 router.get('/doctor/:doctorId', getMedicalRecordsForDoctor);
 router.put('/:recordId', updateMedicalRecord);
 router.delete('/:recordId', deleteMedicalRecord);

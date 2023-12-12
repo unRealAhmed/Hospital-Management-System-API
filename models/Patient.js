@@ -3,8 +3,6 @@ const sequelize = require('../DB/DBConnection');
 const Appointment = require('./Appointment');
 const User = require('./User');
 
-
-
 const Patient = sequelize.define('Patient', {
   patientId: {
     type: DataTypes.INTEGER.UNSIGNED,

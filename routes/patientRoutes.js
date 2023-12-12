@@ -1,4 +1,7 @@
 const express = require('express');
+const patientValidation = require('../validation/patientValidation');
+const validationFunction = require('../middleware/validationFunction');
+
 const {
   createPatient,
   getAllPatients,
@@ -10,11 +13,15 @@ const { protect, restrictTo } = require('../controllers/userController');
 
 const router = express.Router();
 
-router.post('/create/:userId', createPatient);
+router.post(
+  '/create/:userId',
+  validationFunction(patientValidation),
+  createPatient
+);
 
-router.use(protect)
+router.use(protect);
 
-router.get('/', restrictTo('doctor'), getAllPatients)
+router.get('/', restrictTo('doctor'), getAllPatients);
 
 router
   .route('/:patientId')

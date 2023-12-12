@@ -2,7 +2,6 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../DB/DBConnection');
 const AvailabilitySchedule = require('./AvailabilitySchedule');
 
-
 const Appointment = sequelize.define('Appointment', {
   appointmentId: {
     type: DataTypes.INTEGER.UNSIGNED,

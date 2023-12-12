@@ -4,8 +4,6 @@ const AvailabilitySchedule = require('./AvailabilitySchedule');
 const Appointment = require('./Appointment');
 const User = require('./User');
 
-
-
 const Doctor = sequelize.define('Doctor', {
   doctorId: {
     type: DataTypes.INTEGER.UNSIGNED,
